@@ -64,4 +64,6 @@ if __name__ == '__main__':
     for line in webContent.splitlines():
         parser.feed(line)
     print (parser.getTitle())
-    print (parser.getContent())
+    for i in parser.getContent():
+        print (parser.getContent())
+        print ()
