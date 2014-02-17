@@ -7,47 +7,61 @@ from html.parser import HTMLParser
 class courseParser(HTMLParser):
     def __init__(self):
         HTMLParser.__init__(self)
-        self.titleStart = False
-        self.title = ""
-        self.titles = []
-
+        self.rowStart = False
         self.columnStart = False
-        self.courseStart = False
-        self.tmpText = ""
-        self.courseInfo = []
-        self.courses = []
+        self.tmpColInOneRow = []
+        self.tmpRow = []
+        self.table = []
 
     def handle_data(self, data):
-        if self.titleStart is True:
-            self.title += data
-        elif self.titleStart is False and self.title != "":
-            self.titles.append(self.title)
-            self.title = ""
-
         if self.columnStart is True:
             if data == '額滿':
-                self.tmpText = 0
+                self.tmpColInOneRow = 0
             elif data.isdigit():
-                self.tmpText = int(data)
+                self.tmpColInOneRow.append(int(data))
             else:
-                self.tmpText = data
+                self.tmpColInOneRow.append(data)
 
     def handle_starttag(self, tag, attrs):
-        if tag == "td" and self.columnStart is False and self.courseStart is True:
+        if tag == "tr" and self.rowStart is False:
+            self.rowStart = True
+        elif tag == "th" and self.columnStart is False:
             self.columnStart = True
-        elif tag == "th" and self.titleStart is False:
-            self.titleStart = True
-        elif tag == "tr" and self.courseStart is False and len(self.titles) > 0:
-            self.courseStart = True
+        elif tag == "td" and self.columnStart is False:
+            self.columnStart = True
 
     def handle_endtag(self, tag):
-        if tag == "td" and self.columnStart is True:
+        if tag == "tr" and self.rowStart is True:
+            self.rowStart = False
+            self.table.append(self.tmpRow)
+            self.tmpRow = []
+        elif tag == "th" and self.columnStart is True:
             self.columnStart = False
-            self.courseInfo.append(self.tmpText)
-            self.tmpText = ""
-        elif tag == "th" and self.titleStart is True:
-            self.titleStart = False
-        elif tag == "tr" and self.courseStart is True:
-            self.courseStart = False
-            self.courses.append(self.courseInfo)
-            self.courseInfo = []
+            self.tmpRow.append(self.tmpColInOneRow)
+            self.tmpColInOneRow = []
+        elif tag == "td" and self.columnStart is True:
+            self.columnStart = False
+            self.tmpRow.append(self.tmpColInOneRow)
+            self.tmpColInOneRow = []
+
+    def getTitle(self):
+        return self.table[0]
+
+    def getContent(self):
+        return self.table[1:]
+
+    def getTable(self):
+        return self.table
+
+
+if __name__ == '__main__':
+    import urllib.request
+    web = urllib.request.urlopen("http://140.116.165.74/qry/qry001.php?dept_no=AN")
+    webContent = web.read().decode("utf8")
+    web.close()
+
+    parser = courseParser()
+    for line in webContent.splitlines():
+        parser.feed(line)
+    print (parser.getTitle())
+    print (parser.getContent())
