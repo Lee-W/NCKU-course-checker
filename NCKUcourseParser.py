@@ -16,7 +16,7 @@ class courseParser(HTMLParser):
     def handle_data(self, data):
         if self.columnStart is True:
             if data == '額滿':
-                self.tmpColInOneRow = 0
+                self.tmpColInOneRow = [0]
             elif data.isdigit():
                 self.tmpColInOneRow.append(int(data))
             else:
