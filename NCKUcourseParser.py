@@ -16,9 +16,7 @@ class courseParser(HTMLParser):
     def handle_data(self, data):
         if self.columnStart is True:
             if data == '額滿':
-                self.tmpColInOneRow = [0]
-            elif data.isdigit():
-                self.tmpColInOneRow.append(int(data))
+                self.tmpColInOneRow = ['0']
             else:
                 self.tmpColInOneRow.append(data)
 
@@ -37,11 +35,11 @@ class courseParser(HTMLParser):
             self.tmpRow = []
         elif tag == "th" and self.columnStart is True:
             self.columnStart = False
-            self.tmpRow.append(self.tmpColInOneRow)
+            self.tmpRow.append("".join(self.tmpColInOneRow))
             self.tmpColInOneRow = []
         elif tag == "td" and self.columnStart is True:
             self.columnStart = False
-            self.tmpRow.append(self.tmpColInOneRow)
+            self.tmpRow.append("".join(self.tmpColInOneRow))
             self.tmpColInOneRow = []
 
     def getTitle(self):
@@ -63,7 +61,4 @@ if __name__ == '__main__':
     parser = courseParser()
     for line in webContent.splitlines():
         parser.feed(line)
-    print (parser.getTitle())
-    for i in parser.getContent():
-        print (parser.getContent())
-        print ()
+    print (parser.getTable())
