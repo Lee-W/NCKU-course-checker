@@ -4,8 +4,6 @@ enviroment : python 3.3.2
 # -*- coding: utf-8 -*-
 
 from html.parser import HTMLParser
-import urllib.request
-import sys
 
 class courseParser(HTMLParser):
     def __init__(self):
@@ -50,18 +48,3 @@ class courseParser(HTMLParser):
         if tag == "td" and self.courseStart == True:
             self.columnStart = False
 
-
-
-if __name__ == '__main__':
-    URL = "http://140.116.165.74/qry/qry001.php?dept_no=AN"
-    web = urllib.request.urlopen(URL)
-    webContent = web.read().decode("utf8")
-    web.close()
-
-    parser = courseParser()
-    for line in webContent.splitlines():
-        parser.feed(line)
-
-    for i in parser.courses:
-        print (i)
-        print ()
