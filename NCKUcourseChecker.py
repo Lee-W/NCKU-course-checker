@@ -1,7 +1,7 @@
 import NCKUcourseParser
 import urllib.request
 from operator import itemgetter
-from tabulate import tabulate
+# from tabulate import tabulate
 
 
 if __name__ == '__main__':
