@@ -36,7 +36,7 @@ class NCKUcourseChecker():
         for i in range(1, len(self.courseInfo)):
             self.filteredTable.append([self.courseInfo[i][j] for j in filteredIndex])
 
-    def sortedThroughtRemain(self, deleteZero=True):
+    def sortedThroughtRemainder(self, deleteZero=True):
         for i in self.filteredTable[1:]:
             i[5] = int(i[5])
 

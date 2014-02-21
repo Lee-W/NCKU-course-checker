@@ -38,7 +38,7 @@ class GUIChecker(Frame):
         self.checker.setDepartmentNo(departmentNo)
         self.checker.parseCourseData()
         self.checker.filterInfo()
-        self.checker.sortedThroughtRemain()
+        self.checker.sortedThroughtRemainder()
         self.outputAsTable(self.checker.getFilteredTable()[1:])
 
     def clearMethod(self):
