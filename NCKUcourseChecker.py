@@ -19,7 +19,7 @@ class NCKUcourseChecker():
         webContent = web.read().decode("utf8")
         web.close()
 
-        parser = NCKUcourseParser.courseParser()
+        parser = NCKUcourseParser.NCKUcourseParser()
         for line in webContent.splitlines():
             parser.feed(line)
 
