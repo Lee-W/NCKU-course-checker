@@ -9,15 +9,20 @@ class NCKUcourseChecker():
         self.departmentNo = ""
         self.courseInfo = []
         self.filteredTable = []
+        self.NCKUCourseCatalogURL = "http://140.116.165.74/qry/qry001.php?dept_no="
 
     def setDepartmentNo(self, dNo):
         self.departmentNo = dNo
 
-    def parseCourseData(self):
-        URL = "http://140.116.165.74/qry/qry001.php?dept_no=" + self.departmentNo
+    def setURL(self):
+        URL = self.NCKUCourseCatalogURL + self.departmentNo
         web = urllib.request.urlopen(URL)
         webContent = web.read().decode("utf8")
         web.close()
+        return webContent
+
+    def parseCourseData(self):
+        webContent = self.setURL()
 
         parser = NCKUcourseParser.NCKUcourseParser()
         for line in webContent.splitlines():
@@ -51,3 +56,6 @@ class NCKUcourseChecker():
         self.departmentNo = ""
         self.courseInfo = []
         self.filteredTable = []
+
+if __name__ == '__main__':
+    pass

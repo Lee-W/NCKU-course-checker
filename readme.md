@@ -12,6 +12,7 @@ and then input the deparment number
 - the clean button is useless
 - there is no scroll. If the inforamtion is too large, there would be some data that is unable to display.
 - the position of frame is weird
+- console version
 
 #AUTHORS
 [Lee-W](https://github.com/Lee-W/)

@@ -14,10 +14,15 @@ class NCKUcourseParser(HTMLFormParser):
 
 if __name__ == '__main__':
     import urllib.request
-    web = urllib.request.urlopen("http://140.116.165.74/qry/qry001.php?dept_no=AN")
-    webContent = web.read().decode("utf8")
-    web.close()
 
+    NCKUCourseCatalogURL = "http://140.116.165.74/qry/qry001.php?dept_no="
+
+    def setURL(departmentNo):
+        web = urllib.request.urlopen(NCKUCourseCatalogURL + departmentNo)
+        webContent = web.read().decode("utf8")
+        web.close()
+
+    setURL("AN");
     parser = NCKUcourseParser()
     for line in webContent.splitlines():
         parser.feed(line)
