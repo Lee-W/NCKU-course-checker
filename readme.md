@@ -2,11 +2,13 @@
 #DESCRIPTION
 to check whether particular deparment has any course that is not full \(for NCKU only\)
 
+
 #What you need before using it
 - python3
 
 - tkinter
 > sudo apt-get install python3-tk
+
 
 #USAGE
 
@@ -16,12 +18,19 @@ python3 GUI.py
 ```
 and then input the deparment number
 
-##Console mode
+##Console
 ```shell
 python3 console.py
 ```
 and then input the deparment number
 
+
+#Screen shot
+##GUI
+![GUI.py](./img/GUI.png)
+
+##Console
+![console.py](./img/console.png)
 
 
 #Issus
@@ -29,6 +38,7 @@ and then input the deparment number
 - the clean button is useless
 - there is no scroll. If the inforamtion is too large, there would be some data that is unable to display.
 - the position of frame is weird
+
 
 #AUTHORS
 [Lee-W](https://github.com/Lee-W/)
