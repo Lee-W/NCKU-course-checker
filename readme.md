@@ -2,6 +2,12 @@
 #DESCRIPTION
 to check whether particular deparment has any course that is not full \(for NCKU only\)
 
+#What you need before using it
+- python3
+
+- tkinter
+> sudo apt-get install python3-tk
+
 #USAGE
 
 ##GUI
