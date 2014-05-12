@@ -1,4 +1,4 @@
-import NCKUcourseParser
+import lib.NCKUcourseParser as NCKUcourseParser
 import urllib.request
 from operator import itemgetter
 
@@ -58,17 +58,12 @@ class NCKUcourseChecker():
         self.filteredTable = []
 
 if __name__ == '__main__':
-    import os
-    while(True):
-        parser = NCKUcourseChecker()
-        departmentNo = input("請輸入系所代號:")
-        parser.setDepartmentNo(departmentNo)
-        parser.setURL()
-        parser.parseCourseData()
-        parser.filterInfo()
-        parser.sortedThroughtRemainder()
-        result = parser.getFilteredTable()
-        for i in range(len(result)):
-            for j in range(len(result[i])):
-                print(result[i][j], end="\t")
-            print ()
+    parser = NCKUcourseChecker()
+    departmentNo = input("請輸入系所代號:")
+    parser.setDepartmentNo(departmentNo)
+    parser.setURL()
+    parser.parseCourseData()
+    parser.filterInfo()
+    parser.sortedThroughtRemainder()
+    result = parser.getFilteredTable()
+    print (result)

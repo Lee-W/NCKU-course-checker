@@ -1,7 +1,7 @@
 '''
 enviroment : python 3.3.2
 '''
-from HTMLFormParser import HTMLFormParser
+from lib.HTMLFormParser import HTMLFormParser
 
 
 class NCKUcourseParser(HTMLFormParser):

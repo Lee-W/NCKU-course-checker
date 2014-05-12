@@ -1,4 +1,4 @@
-import NCKUcourseChecker
+import lib.NCKUcourseChecker as NCKUcourseChecker
 from tkinter import *
 
 

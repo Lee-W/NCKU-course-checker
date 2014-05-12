@@ -12,13 +12,14 @@ and then input the deparment number
 
 ##Console mode
 ```shell
-python3 NCKUcourseChecker.py
+python3 console.py
 ```
 and then input the deparment number
 
 
 
 #Issus
+##GUI
 - the clean button is useless
 - there is no scroll. If the inforamtion is too large, there would be some data that is unable to display.
 - the position of frame is weird
