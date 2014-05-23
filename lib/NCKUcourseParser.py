@@ -1,29 +1,33 @@
-'''
-enviroment : python 3.3.2
-'''
-from lib.HTMLFormParser import HTMLFormParser
+from .parserHelper.HTMLFormParser import HTMLFormParser
 
+import urllib.request
 
-class NCKUcourseParser(HTMLFormParser):
-    def handle_data(self, data):
-        if self.columnStart is True:
-            if data == '額滿':
-                self.tmpColInOneRow = ['0']
-            else:
-                self.tmpColInOneRow.append(data)
+class NCKUcourseParser():
+    def __init__(self):
+        self.NCKUCourseCatalogURL = "http://140.116.165.74/qry/qry001.php?dept_no="
+        self.URL = ""
+        self.courseForm = []
 
-if __name__ == '__main__':
-    import urllib.request
+    def setURL(self, dNo):
+        self.URL = self.NCKUCourseCatalogURL + dNo
 
-    NCKUCourseCatalogURL = "http://140.116.165.74/qry/qry001.php?dept_no="
-
-    def setURL(departmentNo):
-        web = urllib.request.urlopen(NCKUCourseCatalogURL + departmentNo)
+    def parseWebForm(self):
+        web = urllib.request.urlopen(self.URL)
         webContent = web.read().decode("utf8")
         web.close()
 
-    setURL("AN");
+        formParser = HTMLFormParser()
+        for line in webContent.splitlines():
+            formParser.feed(line)
+
+        self.courseForm = formParser.getTable()
+
+    def getCourseForm(self):
+        return self.courseForm
+
+
+if __name__ == '__main__':
     parser = NCKUcourseParser()
-    for line in webContent.splitlines():
-        parser.feed(line)
-    print (parser.getTable())
+    parser.setURL('A1')
+    parser.parseWebForm()
+    print (parser.getCourseForm())

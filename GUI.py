@@ -1,4 +1,4 @@
-import lib.NCKUcourseChecker as NCKUcourseChecker
+from lib import NCKUcourseChecker
 from tkinter import *
 
 
@@ -7,11 +7,12 @@ class GUIChecker(Frame):
         Frame.__init__(self, master)
         self.grid(columnspan=500)
         self.createWidgets()
-        self.checker = NCKUcourseChecker.NCKUcourseChecker()
-        for i in range(len(self.checker.filterCondition)):
+        self.checker = NCKUcourseChecker()
+        title = self.checker.title
+        for i in range(len(title)):
             e = Entry()
             e.grid(row=3, column=i)
-            e.insert(END, "%s" % (self.checker.filterCondition[i]))
+            e.insert(END, "%s" % (title[i]))
 
 
     def createWidgets(self):
@@ -36,10 +37,7 @@ class GUIChecker(Frame):
         self.checker.reset()
         departmentNo = self.inputText.get()
         self.checker.setDepartmentNo(departmentNo)
-        self.checker.parseCourseData()
-        self.checker.filterInfo()
-        self.checker.sortedThroughtRemainder()
-        self.outputAsTable(self.checker.getFilteredTable()[1:])
+        self.outputAsTable(self.checker.getFilteredCourseData()[1:])
 
     def clearMethod(self):
         pass

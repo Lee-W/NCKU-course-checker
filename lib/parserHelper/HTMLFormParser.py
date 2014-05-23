@@ -1,6 +1,3 @@
-'''
-enviroment : python 3.3.2
-'''
 from html.parser import HTMLParser
 
 
