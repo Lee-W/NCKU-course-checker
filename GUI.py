@@ -30,7 +30,7 @@ class GUIChecker(Frame):
 
         self.clear = Button(self)
         self.clear["text"] = "清除"
-        self.clear.grid(row=2, column=0)
+        self.clear.grid(row=1, column=2)
         # self.clear["command"] = self.clearMethod
 
     def searchMethod(self):
