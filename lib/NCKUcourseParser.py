@@ -1,6 +1,7 @@
 from .parserHelper.HTMLFormParser import HTMLFormParser
 
-import urllib.request
+import requests
+
 
 class NCKUcourseParser():
     def __init__(self):
@@ -12,9 +13,9 @@ class NCKUcourseParser():
         self.URL = self.NCKUCourseCatalogURL + dNo
 
     def parseWebForm(self):
-        web = urllib.request.urlopen(self.URL)
-        webContent = web.read().decode("utf8")
-        web.close()
+        req = requests.get(self.URL)
+        req.encoding = "utf8"
+        webContent = req.text
 
         formParser = HTMLFormParser()
         for line in webContent.splitlines():
