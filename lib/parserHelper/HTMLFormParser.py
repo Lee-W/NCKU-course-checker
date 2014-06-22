@@ -41,10 +41,10 @@ class HTMLFormParser(HTMLParser):
 
 
 if __name__ == '__main__':
-    import urllib.request
-    web = urllib.request.urlopen("http://lee-w.github.io/HTMLFormParser/")
-    webContent = web.read().decode("utf8")
-    web.close()
+    import requests
+    url = "http://lee-w.github.io/HTMLFormParser/"
+    req = requests.get(url)
+    webContent = req.text
 
     parser = HTMLFormParser()
     for line in webContent.splitlines():
