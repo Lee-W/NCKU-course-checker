@@ -1,6 +1,6 @@
 #NCKUcourseChecker.py
 #DESCRIPTION
-to check whether particular deparment has any course that is not full \(for NCKU only\)
+Checking whether there is any course in particular department that still has quota (for NCKU only)
 
 
 #What you need before using it
