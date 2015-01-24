@@ -1,5 +1,11 @@
-from lib import NCKUcourseChecker
-from tkinter import *
+from tkinter import Frame
+from tkinter import Label
+from tkinter import Entry
+from tkinter import Button
+from tkinter import Tk
+from tkinter import END
+
+from NCKU_course_checker.NCKU_course_checker import NckuCourseChecker
 
 
 class GUIChecker(Frame):
@@ -7,13 +13,6 @@ class GUIChecker(Frame):
         Frame.__init__(self, master)
         self.grid(columnspan=500)
         self.createWidgets()
-        self.checker = NCKUcourseChecker()
-        title = self.checker.title
-        for i in range(len(title)):
-            e = Entry()
-            e.grid(row=3, column=i)
-            e.insert(END, "%s" % (title[i]))
-
 
     def createWidgets(self):
         self.inputText = Label(self)
@@ -34,21 +33,28 @@ class GUIChecker(Frame):
         # self.clear["command"] = self.clearMethod
 
     def searchMethod(self):
-        self.checker.reset()
         departmentNo = self.inputText.get()
-        self.checker.setDepartmentNo(departmentNo)
-        self.outputAsTable(self.checker.getFilteredCourseData()[1:])
+        self.checker = NckuCourseChecker(departmentNo)
+        self.outputAsTable()
 
     def clearMethod(self):
         pass
 
+    def outputAsTable(self):
+        title = self.checker.field
+        courses = self.checker.get_courses()
 
-    def outputAsTable(self, table):
-        for i in range(len(table)):
-            for j in range(len(table[i])):
+        for index, field in enumerate(title):
+            e = Entry()
+            e.grid(row=3, column=index)
+            e.insert(END, "%s" % (field))
+
+        for index_i, course in enumerate(courses):
+            for index_j, field in enumerate(title):
                 e = Entry()
-                e.grid(row=i+4, column=j)
-                e.insert(END, "%s" % (table[i][j]))
+                e.grid(row=index_i+4, column=index_j)
+                e.insert(END, "%s" % (course[field]))
+
 
 if __name__ == '__main__':
     root = Tk()

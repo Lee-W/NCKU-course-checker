@@ -6,15 +6,14 @@ class NckuCourseChecker():
     def __init__(self, dept_no, year="", semester=""):
         self._field = ["系號",
                        "序號",
+                       "餘額",
                        "課程名稱(連結課程地圖)",
                        "學分",
                        "教師姓名*:主負責老師",
-                       "餘額",
                        "時間"]
 
         self.parse = NckuCourseParser(dept_no, year, semester)
         self.parse.set_field(self._field)
-        self.courses = self.parse.get_courses()
 
     @property
     def field(self):
@@ -27,6 +26,7 @@ class NckuCourseChecker():
 
     def get_courses(self, sort=False,
                     sort_field="餘額", ascending=True, delete_zero=True):
+        self.courses = self.parse.get_courses()
         if sort:
             self.__sort_data(sort_field, ascending, delete_zero)
         return self.courses
@@ -44,12 +44,12 @@ class NckuCourseChecker():
 
     def print_courses_table(self):
         for field in self._field:
-            print(field, end="\t")
+            print(field, end="\t\t")
         print()
 
         for course in self.courses:
             for field in self._field:
-                print(course[field], end="\t")
+                print(course[field], end="\t\t")
             print()
 
 
