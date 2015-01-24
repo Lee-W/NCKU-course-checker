@@ -12,6 +12,7 @@ from NCKU_course_checker.NCKU_course_checker import NckuCourseChecker
 class GUIChecker(Frame):
     def __init__(self, master=None):
         Frame.__init__(self, master)
+        self.master = master
         self.grid(columnspan=2000)
         self.createWidgets()
 
@@ -39,14 +40,19 @@ class GUIChecker(Frame):
         self.outputAsTable()
 
     def clearMethod(self):
-        self.tree.delete(*self.tree.get_children())
+        try:
+            self.tree.grid_remove()
+        except Exception as e:
+            print(e)
 
     def outputAsTable(self):
         title = self.checker.field
-        courses = self.checker.get_courses()
+        courses = self.checker.get_courses(sort=True,
+                                           delete_zero=True,
+                                           descending=False)
 
-        self.tree = ttk.Treeview(columns=title, show="headings")
-        self.tree.grid(row=2, column=0)
+        self.clearMethod()
+        self.__set_up_tree_widget(title, courses)
 
         for field in title:
             self.tree.heading(field, text=field)
@@ -66,15 +72,18 @@ class GUIChecker(Frame):
                 if self.tree.column(title[ix], width=None) < col_w:
                     self.tree.column(title[ix], width=col_w)
 
-        # for index_i, course in enumerate(courses):
-        #     for index_j, field in enumerate(title):
-        #         e = Entry()
-        #         e.grid(row=index_i+4, column=index_j)
-        #         e.insert(END, "%s" % (course[field]))
+    def __set_up_tree_widget(self, title, courses):
+        self.tree = ttk.Treeview(columns=title, show="headings")
+        vertial_scrollbar = ttk.Scrollbar(orient="vertical",
+                                          command=self.tree.yview)
+        self.tree.configure(yscrollcommand=vertial_scrollbar.set)
+        self.tree.grid(row=2, column=0)
+        vertial_scrollbar.grid(column=1, row=2, sticky="ns")
 
 
 if __name__ == '__main__':
     root = Tk()
     root.title("NCKU course checker")
+    root.resizable(0, 0)
     app = GUIChecker(master=root)
     app.mainloop()

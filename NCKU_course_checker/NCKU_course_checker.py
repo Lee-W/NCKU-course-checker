@@ -25,19 +25,19 @@ class NckuCourseChecker():
         self.parse.set_field(self._field)
 
     def get_courses(self, sort=False,
-                    sort_field="餘額", ascending=True, delete_zero=True):
+                    sort_field="餘額", descending=True, delete_zero=True):
         self.courses = self.parse.get_courses()
         if sort:
-            self.__sort_data(sort_field, ascending, delete_zero)
+            self.__sort_data(sort_field, descending, delete_zero)
         return self.courses
 
-    def __sort_data(self, sort_field='餘額', ascending=True, delete_zero=True):
+    def __sort_data(self, sort_field, descending, delete_zero):
         for course in self.courses:
             course["餘額"] = 0 if course["餘額"] == "額滿" else int(course["餘額"])
 
         self.courses = sorted(self.courses,
                               key=itemgetter(sort_field),
-                              reverse=not ascending)
+                              reverse=descending)
 
         if delete_zero:
             self.courses = list(filter(lambda x: x["餘額"] != 0, self.courses))
