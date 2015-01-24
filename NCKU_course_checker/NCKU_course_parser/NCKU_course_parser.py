@@ -65,7 +65,10 @@ class NckuCourseParser(NckuCourseCrawler):
 
     def set_export_file_name(self, fileName):
         name = self.params['dept_no'] if not fileName else fileName
-        self.fileName = "{}_{}_{}.json".format(name, year, semester)
+        if self.params["syear"] and self.params["sem"]:
+            self.fileName = "{}_{}_{}.json".format(name, year, semester)
+        else:
+            self.fileName = "{}.json".format(name)
 
     def export(self, fileName=None, path='./course_result'):
         self.set_expor_path(path)
@@ -83,23 +86,20 @@ class NoCourseAvailableError(Exception):
     def __str__(self):
         return self.value
 
+
 if __name__ == '__main__':
     import sys
-    from datetime import date
 
     arg_num = len(sys.argv)
 
     if (arg_num is 2):
-        current_year = date.today().year-1911
-        current_month = date.today().month
-
-        dept_no = sys.argv[1]
-        semester = (2 if 1 < current_month < 7 else 1)
-        year = "0" + str(current_year if current_month > 7 else current_year-1)
+        _, dept_no = sys.argv
+        parser = NckuCourseParser(dept_no)
     elif (arg_num is 4):
         _, dept_no, year, semester = sys.argv
         if (year[0] != 0):
             year = "0" + str(year)
+        parser = NckuCourseParser(dept_no, year, semester)
     else:
         print("arg_num should be one or three.\n"
               "one: dept_no\n"
@@ -107,7 +107,6 @@ if __name__ == '__main__':
         exit()
 
     try:
-        parser = NckuCourseParser(dept_no, year, semester)
         parser.set_field(['系號',
                           '序號',
                           '課程名稱(連結課程地圖)',

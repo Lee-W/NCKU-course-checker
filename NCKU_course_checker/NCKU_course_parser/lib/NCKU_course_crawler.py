@@ -3,6 +3,7 @@ import requests
 
 class NckuCourseCrawler():
     def __init__(self, dept_no, year='', semester=''):
+        self.currentCourseURL = "http://140.116.165.74/qry/qry001.php"
         self.courseQueryURL = "http://140.116.165.74/qry/qry002.php"
         self.params = {'syear': year, 'sem': semester, 'dept_no': dept_no}
 
@@ -16,13 +17,21 @@ class NckuCourseCrawler():
         self.params['dept_no'] = dept_no
 
     def get_raw_HTML(self):
-        req = requests.get(self.courseQueryURL, params=self.params)
+        if self.params["sem"] and self.params["syear"]:
+            URL = self.courseQueryURL
+        else:
+            URL = self.currentCourseURL
+        req = requests.get(URL, params=self.params)
         req.encoding = 'utf-8'
         webContent = req.text
         return webContent
 
     def get_URL(self):
-        req = requests.get(self.courseQueryURL, params=self.params)
+        if self.params["sem"] and self.params["syear"]:
+            URL = self.courseQueryURL
+        else:
+            URL = self.currentCourseURL
+        req = requests.get(URL, params=self.params)
         return (req.url)
 
 
