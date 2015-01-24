@@ -32,7 +32,6 @@ class NckuCourseParser(NckuCourseCrawler):
 
     def get_courses(self):
         self.__parse()
-        print(self.get_URL())
 
         if self.contents == [["查無課程資訊"]]:
             raise NoCourseAvailableError("No course available")

@@ -5,7 +5,7 @@ def print_courses_table(checker):
         print(field, end="\t\t")
     print()
 
-    courses = checker.get_courses(sort=True, ascending=False)
+    courses = checker.get_courses(sort=True)
     for course in courses:
         for field in checker.field:
             print(course[field], end="\t\t")
