@@ -7,8 +7,11 @@ Checking whether there is any course in particular department that still has quo
 - python3
 
 - tkinter
+For Ubuntu user
 > sudo apt-get install python3-tk
 
+- requests
+> pip3 install -r requirements.txt
 
 #USAGE
 
@@ -33,9 +36,5 @@ and then input the deparment number
 ![console.py](./img/console.png)
 
 
-#Issus
-
-
 #AUTHORS
 [Lee-W](https://github.com/Lee-W/)
-d
