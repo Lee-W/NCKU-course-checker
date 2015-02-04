@@ -33,7 +33,12 @@ class NckuCourseChecker():
 
     def __sort_data(self, sort_field, descending, delete_zero):
         for course in self.courses:
-            course["餘額"] = 0 if course["餘額"] == "額滿" else int(course["餘額"])
+            if course["餘額"] == "額滿":
+                course["餘額"] = 0
+            elif course["餘額"] == "不限":
+                course["餘額"] = 99999
+            else:
+                course["餘額"] = int(course["餘額"])
 
         self.courses = sorted(self.courses,
                               key=itemgetter(sort_field),
