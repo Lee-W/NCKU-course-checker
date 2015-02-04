@@ -5,8 +5,7 @@ import sys
 
 from cx_Freeze import setup, Executable
 
-# Dependencies are automatically detected, but it might need fine tuning.
-build_exe_options = {"includes": ["tkinter"]}
+build_exe_options = {"includes": ["tkinter", "NCKU_course_checker.NCKU_course_checker"]}
 
 base = None
 if sys.platform == "win32":

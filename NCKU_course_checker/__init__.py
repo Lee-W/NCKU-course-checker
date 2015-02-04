@@ -1,0 +1,1 @@
+from .NCKU_course_checker import NckuCourseChecker
