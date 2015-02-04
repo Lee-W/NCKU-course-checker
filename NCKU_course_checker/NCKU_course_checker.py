@@ -1,5 +1,5 @@
 from operator import itemgetter
-from .NCKU_course_parser.NCKU_course_parser import NckuCourseParser
+from .NCKU_course_parser import NckuCourseParser
 
 
 class NckuCourseChecker():

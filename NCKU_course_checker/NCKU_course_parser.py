@@ -1,8 +1,8 @@
 import json
 import os
 
-from .lib.NCKU_course_crawler import NckuCourseCrawler
-from .lib.HTML_form_parser import HTMLFormParser
+from .NCKU_course_crawler import NckuCourseCrawler
+from .HTML_form_parser import HTMLFormParser
 
 
 class NckuCourseParser(NckuCourseCrawler):
