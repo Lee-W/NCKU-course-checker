@@ -114,7 +114,8 @@ class GUIChecker(Frame):
         self.tree.grid_remove()
 
     def __set_up_tree_widget(self, title, courses):
-        self.tree = ttk.Treeview(columns=title, show="headings", height=len(courses))
+        tree_height = min(30, len(courses))
+        self.tree = ttk.Treeview(columns=title, show="headings", height=tree_height)
         self.tree_vsb = ttk.Scrollbar(orient="vertical", command=self.tree.yview)
         self.tree_hsb = ttk.Scrollbar(orient="horizontal", command=self.tree.xview)
         self.tree.configure(yscrollcommand=self.tree_vsb.set, xscrollcommand=self.tree_hsb.set)
