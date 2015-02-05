@@ -27,6 +27,8 @@ class GUIChecker(Frame):
         self.__set_default_value()
         self.__create_widgets()
 
+        self.setting_on = False
+
     def __set_default_value(self):
         self.all_field = ["系號", "序號", "課程名稱(連結課程地圖)", "餘額", "已選課人數",
                           "教師姓名*:主負責老師", "時間", "教室", "學分", "選必修", "限選條件",
@@ -125,9 +127,12 @@ class GUIChecker(Frame):
         self.tree_hsb.grid(row=4, column=0, sticky="we")
 
     def __setting_method(self):
-        self.setting_win = Toplevel(self)
-        self.setting_win.wm_title("Settings")
-        self.__create_setting_win_widget()
+        if not self.setting_on:
+            self.setting_on = True
+
+            self.setting_win = Toplevel(self)
+            self.setting_win.wm_title("Settings")
+            self.__create_setting_win_widget()
 
     def __create_setting_win_widget(self):
         choose_field_label = Label(self.setting_win, text="選擇欄位")
@@ -161,7 +166,7 @@ class GUIChecker(Frame):
         self.choosen_field = [False]*len(self.all_field)
         for choosen_index in self.choose_field_listbox.curselection():
             self.choosen_field[choosen_index] = True
-
+        self.setting_on = False
         self.setting_win.destroy()
 
     def __restore_setting(self):
