@@ -1,5 +1,14 @@
 # Created by https://www.gitignore.io
 
+### Vim ###
+[._]*.s[a-w][a-z]
+[._]s[a-w][a-z]
+*.un~
+Session.vim
+.netrwhist
+*~
+
+
 ### OSX ###
 .DS_Store
 .AppleDouble
@@ -22,6 +31,7 @@ Network Trash Folder
 Temporary Items
 .apdisk
 
+# Created by https://www.gitignore.io
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
