@@ -1,4 +1,6 @@
 from NCKU_course_checker.NCKU_course_checker import NckuCourseChecker
+from NCKU_course_checker.NCKU_course_parser import NoCourseAvailableError
+
 
 def print_courses_table(checker):
     for field in checker.field:
@@ -16,5 +18,8 @@ if __name__ == '__main__':
         departmentNo = input("請輸入系所代號 (如要離開，請輸入-1) : ")
         if (departmentNo == "-1"):
             break
-        checker = NckuCourseChecker(departmentNo)
-        print_courses_table(checker)
+        try:
+            checker = NckuCourseChecker(departmentNo)
+            print_courses_table(checker)
+        except NoCourseAvailableError as e:
+            print(e)
