@@ -13,12 +13,13 @@ class NckuCourseParser(object):
         self.html = html
         self._include_fields, self._exclude_fields = list(), list()
 
-    def parse(self, parse_format='dataframe'):
-        if parse_format not in NckuCourseParse.PARSE_FORMATS:
+    def parse(self, parse_format='dataframe', sort=False):
+        if parse_format not in NckuCourseParser.PARSE_FORMATS:
             raise NoSuchFormatError('Current only support json or dataframe')
 
         soup = BeautifulSoup(self.html)
         self.df = pd.read_html(str(soup.body.table))[0]
+        self.__clean_data()
 
         if all(self.df['系所名稱'] == '查無課程資訊'):
             raise NoCourseAvailableError('No course available')
@@ -28,10 +29,38 @@ class NckuCourseParser(object):
         elif self.exclude_fields:
             self.df.drop(self.exclude_fields, axis=1, inplace=True)
 
+        if sort:
+            self.sort_courses()
+
         if parse_format == 'dataframe':
             return self.df
         elif parse_format == 'json':
             return self.df.to_dict(orient='records')
+
+    def sort_courses(self, *,
+                     dropna=True, delete_zero=True,
+                     sort_field="餘額", ascending=False):
+        if dropna:
+            self.df.dropna(inplace=True)
+        if delete_zero:
+            self.df = self.df[self.df['餘額'] != 0]
+
+        self.df = self.df.sort_values(by=sort_field, ascending=ascending)
+        return self.df
+
+    def __clean_data(self):
+        self.df = self.df[self.df['系所名稱'] != '系所名稱']
+        self.df.rename(columns={'餘額 ': '餘額'}, inplace=True)
+        self.df['餘額'] = self.df['餘額'].apply(NckuCourseParser.__clean_remain)
+
+    @staticmethod
+    def __clean_remain(remain):
+        if remain == '額滿':
+            return 0
+        elif remain == '不限':
+            return float('nan')
+        else:
+            return float(remain)
 
     def export(self, file_name, path='./course_result'):
         self.export_path = path

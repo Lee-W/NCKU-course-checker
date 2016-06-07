@@ -1,25 +1,31 @@
-from NCKU_course_checker.NCKU_course_checker import NckuCourseChecker
-from NCKU_course_checker.NCKU_course_parser import NoCourseAvailableError
+from nckucourseparser.nckucoursecrawler import NckuCourseCrawler
+from nckucourseparser.nckucourseparser import NckuCourseParser, NoCourseAvailableError
 
 
-def print_courses_table(checker):
-    for field in checker.field:
+def print_courses_table(courses):
+    for field in courses.columns.values:
         print(field, end="\t\t")
     print()
 
-    courses = checker.get_courses(sort=True)
-    for course in courses:
-        for field in checker.field:
-            print(course[field], end="\t\t")
+    for index, row in courses.iterrows():
+        for col in row:
+            print(col, end="\t\t")
         print()
+
 
 if __name__ == '__main__':
     while True:
-        departmentNo = input("請輸入系所代號 (如要離開，請輸入-1) : ")
-        if (departmentNo == "-1"):
+        dept_no = input("請輸入系所代號 (如要離開，請輸入-1) : ")
+        if (dept_no == "-1"):
             break
         try:
-            checker = NckuCourseChecker(departmentNo)
-            print_courses_table(checker)
+            crawler = NckuCourseCrawler(dept_no=dept_no)
+            html = crawler.get_raw_HTML()
+
+            parser = NckuCourseParser(html)
+            parser.include_fields = ["系號", "序號", "餘額", "課程名稱(連結課程地圖)", "學分", "教師姓名*:主負責老師", "時間"]
+            courses = parser.parse(sort=True)
+
+            print_courses_table(courses)
         except NoCourseAvailableError as e:
             print(e)
