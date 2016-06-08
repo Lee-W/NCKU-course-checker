@@ -1,21 +1,14 @@
+import logging
 from copy import deepcopy
 
-from tkinter import Tk
-from tkinter import ttk
-from tkinter import font
-from tkinter import Frame
-from tkinter import Toplevel
-from tkinter import Button
-from tkinter import Checkbutton
-from tkinter import Entry
-from tkinter import Label
-from tkinter import Listbox
-from tkinter import BooleanVar
-from tkinter import MULTIPLE
-from tkinter import END
+from tkinter import Tk, ttk, font
+from tkinter import Frame, Toplevel
+from tkinter import Button, Checkbutton
+from tkinter import Entry, Label, Listbox
+from tkinter import BooleanVar, MULTIPLE, END
 
-from NCKU_course_checker.NCKU_course_checker import NckuCourseChecker
-from NCKU_course_checker.NCKU_course_parser import NoCourseAvailableError
+from nckucourseparser.nckucoursecrawler import NckuCourseCrawler
+from nckucourseparser.nckucourseparser import NckuCourseParser, NoCourseAvailableError
 
 
 class GUIChecker(Frame):
@@ -26,6 +19,7 @@ class GUIChecker(Frame):
 
         self.__set_default_value()
         self.__create_widgets()
+        self.__locate_widges()
 
         self.setting_on = False
 
@@ -35,13 +29,8 @@ class GUIChecker(Frame):
                           "系所名稱", "年級", "組別", "類別", "班別",
                           "業界專家參與", "英語授課", "Moocs", "跨領域學分學程", "備註",
                           "課程碼", "分班碼", "屬性碼"]
-        self.default_choosen_field = [True]*7 + [False]*17
+        self.default_choosen_field =  ["系號", "序號", "餘額", "課程名稱(連結課程地圖)", "學分", "時間", "教師姓名*:主負責老師"]
         self.choosen_field = deepcopy(self.default_choosen_field)
-
-        self.sort_var = BooleanVar()
-        self.dz_var = BooleanVar()
-        self.sort_var.set(True)
-        self.dz_var.set(True)
 
     def __create_widgets(self):
         self.input_label = Label(self, text="系所代碼 ： ")
@@ -51,6 +40,7 @@ class GUIChecker(Frame):
         self.setting_btn = Button(self, text="設定", command=self.__setting_method)
         self.msg_text = Label(self)
 
+    def __locate_widges(self):
         self.input_label.grid(row=0, column=0)
         self.input_field.grid(row=0, column=1, columnspan=6)
         self.search_btn.grid(row=1, column=0)
@@ -60,49 +50,43 @@ class GUIChecker(Frame):
 
     def __search_method(self):
         department_no = self.input_field.get()
-        self.checker = NckuCourseChecker(department_no)
-
-        field = list()
-        for index, choosen in enumerate(self.choosen_field):
-            if choosen:
-                field.append(self.all_field[index])
-        self.checker.field = field
-
         try:
             self.msg_text["text"] = "查詢中"
-            self.__output_as_table()
+            self.__output_as_table(department_no)
             self.msg_text["text"] = ""
-        except NoCourseAvailableError:
+        except NoCourseAvailableError as e:
+            logging.debug(e)
             self.msg_text["text"] = "沒有這個系所"
-        except Exception:
+        except Exception as e:
+            logging.exception("Seach Method: ")
             self.msg_text["text"] = "未知的錯誤"
 
-    def __output_as_table(self):
-        title = self.checker.field
-        courses = self.checker.get_courses(sort=self.sort_var.get(),
-                                           delete_zero=self.dz_var.get(),
-                                           descending=False)
+    def __output_as_table(self, dept_no):
+        courses = self.__search_courses(dept_no)
+        courses['餘額'] = courses['餘額'].apply(int)
+        title = list(courses.columns.values)
 
         self.__clear_method()
-        self.__set_up_tree_widget(title, courses)
+        self.__set_up_tree_widget(title, len(courses))
 
         for field in title:
             self.tree.heading(field, text=field)
             self.tree.column(field, width=font.Font().measure(field))
 
-        course_tuples = list()
-        for course in courses:
-            tmp_tuple = tuple()
-            for field in title:
-                tmp_tuple = tmp_tuple + tuple([course[field]])
-            course_tuples.append(tmp_tuple)
-
-        for course in course_tuples:
-            self.tree.insert('', 'end', values=course)
-            for ix, val in enumerate(course):
+        for index, course in courses.iterrows():
+            self.tree.insert('', 'end', values=tuple(course.values))
+            for ix, val in enumerate(course.values):
                 col_w = font.Font().measure(val) + 10
                 if self.tree.column(title[ix], width=None) < col_w:
                     self.tree.column(title[ix], width=col_w)
+
+    def __search_courses(self, dept_no):
+        crawler = NckuCourseCrawler(dept_no=dept_no)
+        html = crawler.get_raw_HTML()
+        parser = NckuCourseParser(html)
+        parser.include_fields = self.default_choosen_field
+        courses = parser.parse(sort=True)
+        return courses
 
     def __clear_method(self):
         try:
@@ -115,8 +99,8 @@ class GUIChecker(Frame):
         self.tree_hsb.grid_remove()
         self.tree.grid_remove()
 
-    def __set_up_tree_widget(self, title, courses):
-        tree_height = min(30, len(courses))
+    def __set_up_tree_widget(self, title, courses_num):
+        tree_height = min(30, courses_num)
         self.tree = ttk.Treeview(columns=title, show="headings", height=tree_height)
         self.tree_vsb = ttk.Scrollbar(orient="vertical", command=self.tree.yview)
         self.tree_hsb = ttk.Scrollbar(orient="horizontal", command=self.tree.xview)
@@ -179,6 +163,7 @@ class GUIChecker(Frame):
 
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
     root = Tk()
     root.title("NCKU course checker")
     root.resizable(0, 0)
