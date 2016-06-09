@@ -18,11 +18,13 @@ You can get the executable file from [main page](http://lee-w.github.io/NCKU-cou
 
 
 ## GUI
+
 ```shell
 python3 GUI.py
 ```
 
 ## Console
+
 ```shell
 python3 console.py
 ```
@@ -35,11 +37,13 @@ Note that you would need to setup the packages needed for freezing.
 ## cx_freeze
 
 ### Gerneral
+
 ```shell
 python3 setup.py build
 ```
 
 ### For mac
+
 ```shell
 python3 setup.py bdist_mac
 ```
@@ -48,6 +52,7 @@ after that you will find executable file under folder `build`
 
 ## py2exe
 It can only be used under Windows.
+
 ```shell
 python3 setup-py2exe.py build
 python3 setup-py2exe.py py2exe
@@ -57,6 +62,7 @@ after that you will find executable file under folder `dist`
 
 ## py2app
 It can only be used under Mac OSX.
+
 ```shell
 python3 setup-py2app.py py2app
 ```
