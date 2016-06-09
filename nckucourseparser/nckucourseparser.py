@@ -50,7 +50,8 @@ class NckuCourseParser(object):
 
     def __clean_data(self):
         self.df = self.df[self.df['系所名稱'] != '系所名稱']
-        self.df.rename(columns={'餘額 ': '餘額'}, inplace=True)
+        cleaned_columns = {col: col.strip() for col in self.df.columns.values}
+        self.df.rename(columns=cleaned_columns, inplace=True)
         self.df['餘額'] = self.df['餘額'].apply(NckuCourseParser.__clean_remain)
 
     @staticmethod
@@ -66,7 +67,6 @@ class NckuCourseParser(object):
         self.export_path = path
         self.file_name = file_name
 
-        courses = self.parse('json')
         full_file_name = os.path.join(self.export_path, self.file_name)
         with open(full_file_name, 'w', encoding='utf-8') as export_file:
             json.dump(self.df.to_dict(orient='records'),
