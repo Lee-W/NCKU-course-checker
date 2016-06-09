@@ -4,7 +4,8 @@ main_python_file = "GUI.py"
 application_title = "NCKU Course Checker"
 application_description = "App to query NCKU courses"
 
-includes = ["NCKU_course_checker.NCKU_course_checker"]
+includes = ['nckucourseparser.nckucoursecrawler',
+            'nckucourseparser.nckucourseparser']
 excludes = []
 packages = []
 include_files = []
