@@ -168,7 +168,7 @@ class GUIChecker(Frame):
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.ERROR)
 
     root = Tk()
     root.title("NCKU course checker")
