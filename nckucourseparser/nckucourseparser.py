@@ -17,8 +17,8 @@ class NckuCourseParser(object):
         if parse_format not in NckuCourseParser.PARSE_FORMATS:
             raise NoSuchFormatError('Current only support json or dataframe')
 
-        soup = BeautifulSoup(self.html)
-        self.df = pd.read_html(str(soup.body.table))[0]
+        soup = BeautifulSoup(self.html, 'html5lib')
+        self.df = pd.read_html(str(soup.body.table), flavor='bs4')[0]
         self.__clean_data()
 
         if all(self.df['系所名稱'] == '查無課程資訊'):
