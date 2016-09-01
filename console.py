@@ -1,3 +1,5 @@
+from veryprettytable import VeryPrettyTable
+
 from nckucourseparser.nckucoursecrawler import NckuCourseCrawler
 from nckucourseparser.nckucourseparser import NckuCourseParser, NoCourseAvailableError
 
@@ -26,6 +28,10 @@ if __name__ == '__main__':
             parser.include_fields = ["系號", "序號", "餘額", "課程名稱(連結課程地圖)", "學分", "教師姓名*:主負責老師", "時間"]
             courses = parser.parse(sort=True)
 
-            print_courses_table(courses)
+            table = VeryPrettyTable()
+            table.field_names = courses.columns.values
+            for i in courses.iterrows():
+                table.add_row(i[1])
+            print(table)
         except NoCourseAvailableError as e:
             print(e)

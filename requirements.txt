@@ -3,3 +3,4 @@ pandas==0.18.0
 beautifulsoup4==4.4.1
 numexpr==2.5.2
 html5lib==0.9999999
+veryprettytable==0.8.1
