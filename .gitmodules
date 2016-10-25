@@ -1,0 +1,3 @@
+[submodule "nckucourseparser"]
+	path = nckucourseparser
+	url = https://github.com/Lee-W/nckucourseparser
