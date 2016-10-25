@@ -1,21 +1,26 @@
-# NCKUcourseChecker.py
+# NCKU Course Checker
 Checking whether there is any course in particular department that still has quota (for NCKU only)
 
 # Requirement
-- python3
+- Python3
 
-- tkinter
-For Ubuntu user
-> sudo apt-get install python3-tk
-
-- requests
+- requirements  
 > pip3 install -r requirements.txt
 
+- tkinter  
+  
+	For Ubuntu user
+	> sudo apt-get install python3-tk
+
+# Clone
+
+```sh
+git clone --recursive https://github.com/Lee-W/NCKU-course-checker
+```
 
 # USAGE
 You can get the executable file from [main page](http://lee-w.github.io/NCKU-course-checker/)
 , [build executeable file youself](#exe) or run it through python3 interpreter as below.
-
 
 ## GUI
 
@@ -36,8 +41,6 @@ Note that you would need to setup the packages needed for freezing.
 
 ## cx_freeze
 
-### Gerneral
-
 ```shell
 python3 setup.py build
 ```
@@ -48,7 +51,7 @@ python3 setup.py build
 python3 setup.py bdist_mac
 ```
 
-after that you will find executable file under folder `build`
+After that you will find executable file under folder `build`
 
 ## py2exe
 It can only be used under Windows.
@@ -58,16 +61,16 @@ python3 setup-py2exe.py build
 python3 setup-py2exe.py py2exe
 ```
 
-after that you will find executable file under folder `dist`
+After that you will find executable file under folder `dist`
 
 ## py2app
-It can only be used under Mac OSX.
+It can only be used under MacOS.
 
 ```shell
 python3 setup-py2app.py py2app
 ```
 
-after that you will find executable file under folder `dist`
+After that you will find executable file under folder `dist`
 
 
 # Screen shot
@@ -83,6 +86,8 @@ after that you will find executable file under folder `dist`
 ## Console
 ![console.py](./img/console.png)
 
-
 # AUTHORS
 [Lee-W](https://github.com/Lee-W/)
+
+# License
+MIT
